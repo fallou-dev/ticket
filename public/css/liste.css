@@ -1,0 +1,25 @@
+#liste ul{
+  display:inline-block;
+  
+}
+
+.assignement2{
+  background-color: #f44336;
+  
+}
+
+.assignement3{
+  background-color: #4065cd;
+  float: none;
+}
+
+.assignement{
+  background-color: rgba(57, 228, 72, 0.821);
+}
+
+.input-group{
+  
+text-align: center;
+}
+
+
