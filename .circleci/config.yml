@@ -38,7 +38,7 @@ jobs:
             - v1-dependencies-
 
       - run: composer install -n --prefer-dist
-
+     
       - save_cache:
           key: v1-dependencies-{{ checksum "composer.json" }}
           paths:
@@ -47,6 +47,7 @@ jobs:
           keys:
             - node-v1-{{ checksum "package.json" }}
             - node-v1-
+      - run: sudo install yarn
       - run: yarn install
       - save_cache:
           key: node-v1-{{ checksum "package.json" }}
