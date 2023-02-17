@@ -48,8 +48,9 @@ jobs:
             - node-v1-{{ checksum "package.json" }}
             - node-v1-
       - run: sudo apt install nodejs npm -y
-      - run: sudo npm install -g yarn
-      - run: yarn install
+      #- run: sudo npm install -g yarn
+      #- run: yarn install
+      - run: npm install
       - save_cache:
           key: node-v1-{{ checksum "package.json" }}
           paths:
