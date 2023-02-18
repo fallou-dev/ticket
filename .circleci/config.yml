@@ -12,12 +12,7 @@ jobs:
       # Specify the version you desire here
      # - image: cimg/php:8.2.2
       - image: circleci/mysql:5.7.18
-        environment:
-          MYSQL_DATABASE: ticket_app
-          MYSQL_USER: root
-          MYSQL_PASSWORD: 
-          MYSQL_ROOT_PASSWORD: 
-
+      
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
