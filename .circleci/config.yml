@@ -8,9 +8,9 @@ jobs:
   build:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    container:
+    docker:
       # Specify the version you desire here
-      - image: cimg/php:8.2.2
+      - image: circleci/php:7.1-node-browsers
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -38,7 +38,7 @@ jobs:
             - v1-dependencies-
 
       - run: composer install -n --prefer-dist
-     
+
       - save_cache:
           key: v1-dependencies-{{ checksum "composer.json" }}
           paths:
@@ -48,8 +48,6 @@ jobs:
             - node-v1-{{ checksum "package.json" }}
             - node-v1-
       - run: sudo apt install nodejs npm -y
-      #- run: sudo npm install -g yarn
-      #- run: yarn install
       - run: npm install 
       - save_cache:
           key: node-v1-{{ checksum "package.json" }}
@@ -57,12 +55,8 @@ jobs:
             - node_modules
 
       # prepare the database
-      # - run: cp .env.example .env.testing #Copy .env.testing to .env 
-     
-     - run: touch storage/testing.sqlite
-   
+      - run: touch storage/testing.sqlite
       - run: php artisan migrate  --env=example --force
-
 
       # run tests with phpunit or codecept
       #- run: ./vendor/bin/phpunit
