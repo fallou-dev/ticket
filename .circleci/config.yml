@@ -10,8 +10,8 @@ jobs:
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
       # Specify the version you desire here
-     # - image: cimg/php:8.2.2
-      - image: circleci/mysql:5.7.18
+     - image: cimg/php:8.2.2
+  
       
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
