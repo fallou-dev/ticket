@@ -10,9 +10,8 @@ jobs:
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
       # Specify the version you desire here
-     - image: cimg/php:8.2.2
-  
-      
+      - image: cimg/php:8.2.2
+
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
@@ -59,8 +58,10 @@ jobs:
 
       # prepare the database
       # - run: cp .env.example .env.testing #Copy .env.testing to .env 
+     
      - run: touch storage/testing.sqlite
-     - run: php artisan migrate  --env=example --force
+   
+      - run: php artisan migrate  --env=local --force
 
 
       # run tests with phpunit or codecept
