@@ -10,7 +10,19 @@ jobs:
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
       # Specify the version you desire here
-      - image: cimg/php:8.2.2
+     # - image: cimg/php:8.2.2
+     - image: ubuntu:latest # Main container
+        environment:
+          TZ: "America/Los_Angeles"
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: ticket_app
+          MYSQL_USER: root
+      - image: circleci/mysql:5.7.18
+        environment:
+          MYSQL_DATABASE: ticket_app
+          MYSQL_USER: root
+          MYSQL_PASSWORD: 
+          MYSQL_ROOT_PASSWORD: 
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -58,10 +70,10 @@ jobs:
 
       # prepare the database
       # - run: cp .env.example .env.testing #Copy .env.testing to .env 
-     - run: mysql -u root -p 
+     
      - run: touch storage/testing.sqlite
    
-      - run: php artisan migrate  --env=local --force
+      - run: php artisan migrate  --env=example --force
 
 
       # run tests with phpunit or codecept
