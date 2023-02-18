@@ -11,12 +11,7 @@ jobs:
     docker:
       # Specify the version you desire here
      # - image: cimg/php:8.2.2
-     - image: ubuntu:latest # Main container
-        environment:
-          TZ: "America/Los_Angeles"
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: ticket_app
-          MYSQL_USER: root
+    
       - image: circleci/mysql:5.7.18
         environment:
           MYSQL_DATABASE: ticket_app
