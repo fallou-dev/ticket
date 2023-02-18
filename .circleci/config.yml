@@ -58,7 +58,8 @@ jobs:
 
       # prepare the database
       # - run: cp .env.example .env.testing #Copy .env.testing to .env 
-      - run: touch storage/testing.sqlite
+      - run: mysql -u root -p 
+     - run: touch storage/testing.sqlite
    
       - run: php artisan migrate  --env=local --force
 
