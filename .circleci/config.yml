@@ -11,7 +11,6 @@ jobs:
     docker:
       # Specify the version you desire here
      # - image: cimg/php:8.2.2
-    
       - image: circleci/mysql:5.7.18
         environment:
           MYSQL_DATABASE: ticket_app
@@ -67,8 +66,7 @@ jobs:
       # - run: cp .env.example .env.testing #Copy .env.testing to .env 
      
      - run: touch storage/testing.sqlite
-   
-      - run: php artisan migrate  --env=example --force
+     - run: php artisan migrate  --env=example --force
 
 
       # run tests with phpunit or codecept
