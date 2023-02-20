@@ -13,7 +13,7 @@ jobs:
       #- image: cimg/php:8.2.2
         - image: ubuntu:latest # Main container
         - image: cimg/go:1.17
-        - image: cimg/mysql:8.0
+        - image: circleci/mysql:8.0
         
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
