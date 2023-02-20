@@ -37,7 +37,6 @@ jobs:
            
             sudo apt update
             sudo apt upgrade
-           
             sudo apt install nodejs npm -y
       # Download and cache dependencies
 
