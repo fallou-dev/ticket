@@ -4,7 +4,7 @@
 #
 version: 2
 jobs:
-  build:
+  build-test:
      docker:
       # Specify the version you desire here
       - image: cimg/php:8.2.2
@@ -84,35 +84,11 @@ jobs:
           path: tests/_output
       - store_artifacts:
           path: tests/_output
-          #deployment
-  deploy:
-    docker:
-      - image: circleci/php:7.2-browsers
-    working_directory: ~/laravel
-    steps:
-      - checkout
-      - add_ssh_keys:
-          fingerprints:
-            - "YOUR_FINGERPRINT"
-      - run:
-          name: Install Deployer
-          command: |
-            curl -LO https://deployer.org/deployer.phar
-            sudo mv deployer.phar /usr/local/bin/dep
-            sudo chmod +x /usr/local/bin/dep
-      - run:
-          name: Deploy
-          command: |
-            dep deploy www.your_server.com
+
 
 workflows:
   version: 2
   workflow:
     jobs:
-    - build
-    - deploy:
-          requires:
-            - build
-          filters:
-            branches:
-              only: main
+    - build-test
+    
