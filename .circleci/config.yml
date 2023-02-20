@@ -76,7 +76,7 @@ jobs:
       #- run: ./vendor/bin/phpunit
       # this example uses codecept but you're not limited to it
       - run: composer require codeception/codeception --dev
-      - run: php artisan key:generate
+      
       - run: ./vendor/bin/codecept bootstrap
       - run: ./vendor/bin/codecept build
       - run: ./vendor/bin/codecept run --xml result.xml
