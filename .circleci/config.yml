@@ -11,6 +11,7 @@ jobs:
     docker:
       # Specify the version you desire here
       #- image: cimg/php:8.2.2
+        machine:
         - image: ubuntu:latest # Main container
         - image: cimg/go:1.17
         - image: circleci/mysql:8.0
