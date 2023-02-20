@@ -4,8 +4,8 @@
 #
 version: 2
 jobs:
-  build-and-test:
-    docker:
+  build:
+     docker:
       # Specify the version you desire here
       - image: cimg/php:8.2.2
 
@@ -24,7 +24,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: ''
           MYSQL_PASSWORD: 'forge'
 
-    steps:
+     steps:
       - checkout
       - run:
           name: Install MySQL driver
@@ -85,7 +85,7 @@ jobs:
       - store_artifacts:
           path: tests/_output
           #deployment
-          deploy:
+  deploy:
     docker:
       - image: circleci/php:7.2-browsers
     working_directory: ~/laravel
@@ -109,7 +109,7 @@ workflows:
   version: 2
   workflow:
     jobs:
-    - build-and-test
+    - build
     - deploy:
           requires:
             - build
