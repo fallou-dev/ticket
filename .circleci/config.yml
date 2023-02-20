@@ -12,7 +12,7 @@ jobs:
       # Specify the version you desire here
       #- image: cimg/php:8.2.2
         - image: ubuntu:latest # Main container
-         
+        - image: cimg/go:1.17
         - image: cimg/mysql:8.0
         
       # Specify service dependencies here if necessary
