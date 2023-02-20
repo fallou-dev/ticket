@@ -1,81 +1,85 @@
 # PHP CircleCI 2.0 configuration file
-# See: https://circleci.com/docs/2.0/language-php/
+#
+# Check https://circleci.com/docs/2.0/language-php/ for more details
+#
 version: 2
-
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  build:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+  test:
     docker:
       # Specify the version you desire here
-      #- image: cimg/php:8.2.2
-       - image: circleci/php:7.1-browsers
-       - image: circleci/mysql:8.0
-    environment:
-          MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-          MYSQL_USER: root
-          MYSQL_ROOT_PASSWORD: ''
-          MYSQL_DATABASE: ticket-app
+      - image: circleci/php:7.2-stretch
 
-    working_directory: ~/laravel
-        
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # Using the RAM variation mitigates I/O contention
       # for database intensive operations.
       # - image: circleci/mysql:5.7-ram
-      #
-      # - image: redis:2.8.19
+      # - image: redis:3
+      - image: circleci/mysql:8.0.20-ram
+        command: mysqld --default-authentication-plugin=mysql_native_password
+        environment:
+          MYSQL_USER: forge
+          MYSQL_DATABASE: forge
+          MYSQL_ROOT_PASSWORD: ''
+          MYSQL_PASSWORD: 'forge'
 
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
       - run:
-          name: Install PHP exts
+          name: Install MySQL driver
           command: |
-            sudo docker-php-ext-install zip
-            sudo docker-php-ext-install pdo_mysql
-            sudo apt install -y mysql-client
-      - run: sudo composer self-update
-      - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
-      - run: sudo docker-php-ext-install zip
-      
-
+            sudo docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd
+            sudo docker-php-ext-install zip bcmath pdo_mysql
+      - run:
+          name: Install Node
+          command: |
+            curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+            sudo apt-get install -y nodejs
       # Download and cache dependencies
+
+      # composer cache
       - restore_cache:
           keys:
-            # "composer.lock" can be used if it is committed to the repo
-            - v1-dependencies-{{ checksum "composer.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
+          # "composer.json" can be used if "composer.json"
+          # is not committed to the repository.
+          - composer-v1-{{ checksum "composer.lock" }}
+          # fallback to using the latest cache if no exact match is found
+          - composer-v1-
       - run: composer install -n --prefer-dist
-
       - save_cache:
-          key: v1-dependencies-{{ checksum "composer.json" }}
+          key: composer-v1-{{ checksum "composer.lock" }}
           paths:
-            - ./vendor
+            - vendor
+
+      # node cache
       - restore_cache:
           keys:
-            - node-v1-{{ checksum "package.json" }}
-            - node-v1-
-      - run: sudo apt install nodejs npm -y
-      - run: npm install 
+            - node-v4-{{ checksum "package.json" }}
+            - node-v4-
+      - run: npm install
       - save_cache:
-          key: node-v1-{{ checksum "package.json" }}
+          key: node-v4-{{ checksum "package.json" }}
           paths:
             - node_modules
+            - ~/.yarn
 
       # prepare the database
-      #- run: touch storage/testing.sqlite
-      #- run: php artisan migrate  --env=example --force
+      - run: touch storage/testing.sqlite
+      - run: php artisan migrate --env=testing --database=mysql --force
 
       # run tests with phpunit or codecept
       #- run: ./vendor/bin/phpunit
-     # - run: ./vendor/bin/codecept build
-    #  - run: ./vendor/bin/codecept run
-     
+      # this example uses codecept but you're not limited to it
+      - run: ./vendor/bin/codecept build
+      - run: ./vendor/bin/codecept run --xml result.xml
+      - store_test_results:
+          path: tests/_output
+      - store_artifacts:
+          path: tests/_output
+
+workflows:
+  version: 2
+  workflow:
+    jobs:
+    - test
