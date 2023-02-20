@@ -21,8 +21,8 @@ jobs:
         environment:
           MYSQL_USER: forge
           MYSQL_DATABASE: forge
-          MYSQL_ROOT_PASSWORD: ''
-          MYSQL_PASSWORD: 'forge'
+          MYSQL_ROOT_PASSWORD: 'forge'
+          MYSQL_PASSWORD: ''
 
     steps:
       - checkout
