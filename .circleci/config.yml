@@ -4,7 +4,7 @@
 #
 version: 2
 jobs:
-  build:
+  build-and-test:
     docker:
       # Specify the version you desire here
       - image: cimg/php:8.2.2
@@ -88,4 +88,4 @@ workflows:
   version: 2
   workflow:
     jobs:
-    - build
+    - build-and-test
